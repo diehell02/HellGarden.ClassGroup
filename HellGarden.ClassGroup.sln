@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HellGarden.ClassGroup.Group
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HellGarden.ClassGroup.GroupClassLibrary", "HellGarden.ClassGroup.GroupClassLibrary\HellGarden.ClassGroup.GroupClassLibrary.csproj", "{DE40B72E-18D5-44B7-AB72-A3C9EE57FF8B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HellGarden.ClassGroup.WPF", "HellGarden.ClassGroup.WPF\HellGarden.ClassGroup.WPF.csproj", "{4734D693-9164-41A6-9BC0-4A1B57E637EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{DE40B72E-18D5-44B7-AB72-A3C9EE57FF8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE40B72E-18D5-44B7-AB72-A3C9EE57FF8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE40B72E-18D5-44B7-AB72-A3C9EE57FF8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4734D693-9164-41A6-9BC0-4A1B57E637EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4734D693-9164-41A6-9BC0-4A1B57E637EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4734D693-9164-41A6-9BC0-4A1B57E637EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4734D693-9164-41A6-9BC0-4A1B57E637EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

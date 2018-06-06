@@ -1,0 +1,34 @@
+﻿<Window x:Class="HellGarden.ClassGroup.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HellGarden.ClassGroup.WPF"
+        mc:Ignorable="d"
+        Title="分班计算器" Height="450" Width="800" FontSize="20" ResizeMode="CanMinimize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="原始数据" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Name="ImportFileTextBox" HorizontalAlignment="Center" Height="31" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="350" TextChanged="TextBox_TextChanged" Margin="10,0"/>
+        <Button Grid.Row="0" Grid.Column="2" Margin="5" Content="导入" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Click="Button_Click"/>
+        <CheckBox Grid.Row="3" Grid.Column="0" Name="MultithreadingCheckBox" Margin="5" Content="多线程" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Grid.Row="1" Grid.Column="0" Margin="5" Content="班级数量" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Name="ClassCountTextBox" Margin="10,0" HorizontalAlignment="Center" Height="31" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="350"/>
+        <Label Grid.Row="2" Grid.Column="0" Margin="5" Content="循环次数" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Name="RepeatCountTextBox" Margin="10,0" HorizontalAlignment="Center" Height="31" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="350"/>
+        <Button Grid.Row="4" Grid.Column="2" Margin="5" Content="生成" Click="Generate_Click"/>
+        <TextBlock Grid.Row="5" Grid.ColumnSpan="3" Margin="10" Name="PrintMsg"/>
+    </Grid>
+</Window>
