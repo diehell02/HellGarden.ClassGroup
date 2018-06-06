@@ -4,100 +4,207 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using HellGarden.ClassGroup.GroupClassLibrary.Entity;
+using HellGarden.ClassGroup.GroupClassLibrary.Util;
+using System.Threading.Tasks;
+using System.Timers;
 
 namespace HellGarden.ClassGroup.GroupClassLibrary
 {
     public class Group : IGroup
     {
-        public List<IClass> Grouping(List<IStudent> students, int classCount)
+        public List<IClass> Grouping(List<IStudent> students, int classCount, int repeatCount, bool IsMultithreading, Action<string> action = null)
         {
-            int count = 100000;
-            List<IClass> classes = initClasses(students, classCount);
+            List<IClass> result = null;
 
-            while (!CalculateWeight(classes) && count > 0)
+            int count = repeatCount;
+
+            Timer timer = new Timer(30000)
             {
+                Enabled = true,
+                AutoReset = true,
+            };
+            int timerCount = 0;
+
+            timer.Elapsed += (object sender, ElapsedEventArgs e) =>
+            {
+                if(count == 0)
+                {
+                    return;
+                }
+
+                string message = string.Empty;
+
+                switch(timerCount)
+                {
+                    case 0:
+                        message = "玩命在算！";
+                        break;
+                    case 1:
+                        message = "你这电脑有点慢呐……";
+                        break;
+                    case 2:
+                        message = "把电脑卖了吧，可以买根冰棍。";
+                        break;
+                    case 3:                        
+                        message = "表情逐渐凝固。";
+                        break;
+                    case 4:
+                        message = "我已无f**k说。";
+                        break;
+                    case 5:
+                        message = "你自己玩吧，劳资不干了。";
+                        break;
+                }
+
+                message += string.Format("还剩余{0}次", count);
+
+                action?.Invoke(message);
+
+                timerCount++;
+            };
+
+            while (count > 0)
+            {
+                List<IStudent> _students = Swap(students);
+
+                List<List<IStudent>> studentsList = initClasses(_students, classCount);
+
+                if(IsMultithreading)
+                {
+                    Task.Run(() =>
+                    {
+                        result = CalculateWeight(studentsList);
+                    });
+                }
+                else
+                {
+                    result = CalculateWeight(studentsList);
+                }
+
                 count--;
-                Swap(students);
-
-                classes = initClasses(students, classCount);
             }
 
-            if (count == 0)
-            {
-                return null;
-            }
+            Task.WaitAll();
 
-            return classes;
+            timer.Stop();
+
+            return result;
         }
 
         private List<IStudent> Swap(List<IStudent> students)
         {
-            int count = students.Count;
+            List<IStudent> _students = students;
+
+            int count = _students.Count;
 
             Random random = new Random();
             int index1 = random.Next(0, count);
             int index2 = random.Next(0, count);
 
-            IStudent temp = students[index1];
-            students[index1] = students[index2];
-            students[index2] = temp;
+            IStudent temp = _students[index1];
+            _students[index1] = _students[index2];
+            _students[index2] = temp;
 
-            return students;
+            return _students;
         }
 
-        private List<IClass> initClasses(List<IStudent> students, int classCount)
+        private List<List<IStudent>> initClasses(List<IStudent> students, int classCount)
         {
-            List<IClass> classes = new List<IClass>();
-            int id = 0;
+            //List<IClass> classes = new List<IClass>();
+            List<List<IStudent>> studentsList = new List<List<IStudent>>();
+            //int id = 1;
 
             int studentCount = students.Count / classCount;
 
             int index = studentCount;
             for (int i = 0; i < students.Count; i += studentCount)
             {
-                List<IStudent> _students = students.Take(i + studentCount).Skip(i).ToList();
+                List<IStudent> _students = null;
 
-                classes.Add(new Class() { ID = id++, Students = _students });
+                //if(id == classCount)
+                if(studentsList.Count == classCount - 1)
+                {
+                    _students = students.Take(students.Count).Skip(i).ToList();
+                    i = students.Count;
+                }
+                else
+                {
+                    _students = students.Take(i + studentCount).Skip(i).ToList();
+                }
+
+                //classes.Add(new Class() { ID = id++, Students = _students });
+                studentsList.Add(_students);
+            }
+
+            //return classes;
+            return studentsList;
+        }
+
+        private List<IClass> CreateClasses(List<List<IStudent>> studentsList)
+        {
+            List<IClass> classes = new List<IClass>();
+
+            for(int i = 0; i < studentsList.Count; i++)
+            {
+                classes.Add(new Class() { ID = i, Students = studentsList[i] });
             }
 
             return classes;
         }
 
-        private bool CalculateWeight(List<IClass> classes)
+        double minWeight = double.MaxValue;
+        List<IClass> result = null;
+        Dictionary<string, double> weightDic = new Dictionary<string, double>();
+        object lockObj = new object();
+
+        private List<IClass> CalculateWeight(List<List<IStudent>> studentsList)
         {
-            bool flag = true;
-            List<string> propertyList = new List<string>()
+            List<Weight> propertyList = new List<Weight>()
             {
-                "Score", "Sex", "IsLodge", "IsDowntown"
+                new Weight("Chinese"),
+                new Weight("Math"),
+                new Weight("English"),
+                new Weight("Physics"),
+                new Weight("Chemistry"),
+                new Weight("Biology"),
+                new Weight("IsMale", 3, 100),
+                new Weight("IsLodge", 3, 50),
+                new Weight("IsDowntown", 3, 100),
             };
 
-            propertyList.ForEach(propertyName =>
+            double sumVariance = 0;
+            //Dictionary<string, double> _weightDic = new Dictionary<string, double>();
+
+            propertyList.ForEach(weight =>
             {
-                double min = 0;
-                double max = 0;
+                string propertyName = weight.PropertyName;
 
-                classes.ForEach(_class =>
+                double variance = MathUtil.Variance(studentsList, students =>
                 {
-                    double weight = _class.GetWeight(propertyName);
-
-                    if(weight < min)
-                    {
-                        min = weight;
-                    }
-
-                    if (weight > max)
-                    {
-                        max = weight;
-                    }
+                    return Class.GetValue(propertyName, students);
                 });
 
-                if(max - min > 1)
+                //_weightDic.Add(propertyName, variance);
+
+                if (variance > weight.Limit)
                 {
-                    flag = false;
+                    variance *= weight.Multiple;
                 }
+
+                sumVariance += variance;
             });
 
-            return flag;
+            lock(lockObj)
+            {
+                if (sumVariance < minWeight)
+                {
+                    //weightDic = _weightDic;
+                    minWeight = sumVariance;
+                    result = CreateClasses(studentsList);
+                }
+            }
+
+            return result;
         }
     }
 }

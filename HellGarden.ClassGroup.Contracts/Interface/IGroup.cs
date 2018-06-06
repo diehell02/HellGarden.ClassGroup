@@ -11,6 +11,6 @@ namespace HellGarden.ClassGroup.Contracts.Interface
         /// </summary>
         /// <param name="students"></param>
         /// <returns></returns>
-        List<IClass> Grouping(List<IStudent> students, int classCount);
+        List<IClass> Grouping(List<IStudent> students, int classCount, int repeatCount, bool IsMultithreading, Action<string> action = null);
     }
 }

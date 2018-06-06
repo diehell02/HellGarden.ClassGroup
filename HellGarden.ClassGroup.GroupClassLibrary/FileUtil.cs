@@ -12,7 +12,9 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
 {
     public class FileUtil
     {
-        public static List<IStudent> Load(string path)
+        List<string> headers = null;
+
+        public List<IStudent> Load(string path)
         {
             IWorkbook workbook = null;
 
@@ -33,6 +35,18 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
 
             if (sheet != null)
             {
+                IRow headerRow = sheet.GetRow(0);
+
+                if(headerRow != null)
+                {
+                    headers = new List<string>();
+
+                    foreach (var cell in headerRow)
+                    {
+                        headers.Add(cell.StringCellValue);
+                    }
+                }
+
                 students = new List<IStudent>();
 
                 int index = 1;
@@ -49,10 +63,19 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                     IStudent student = new Student()
                     {
                         Name = cells.GetCell(0).StringCellValue,
+                        Chinese = cells.GetCell(1).NumericCellValue,
+                        Math = cells.GetCell(2).NumericCellValue,
+                        English = cells.GetCell(3).NumericCellValue,
+                        Physics = cells.GetCell(4).NumericCellValue,
+                        Chemistry = cells.GetCell(5).NumericCellValue,
+                        Biology = cells.GetCell(6).NumericCellValue,
                         Score = cells.GetCell(7).NumericCellValue,
-                        Sex = cells.GetCell(9).StringCellValue == "男" ? Sex.Male : Sex.Female,
+                        IsMale = cells.GetCell(9).StringCellValue == "男" ? true : false,
+                        Sex = cells.GetCell(9).StringCellValue,
                         IsLodge = cells.GetCell(10).StringCellValue == "寄宿" ? true: false,
+                        Lodge = cells.GetCell(10).StringCellValue,
                         IsDowntown = cells.GetCell(8).StringCellValue == "市直" ? true : false,
+                        Hometown = cells.GetCell(8).StringCellValue,
                     };
 
                     students.Add(student);
@@ -60,6 +83,59 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
             }
 
             return students;
+        }
+
+        public void Save(string path, List<IClass> classes)
+        {
+            IWorkbook workbook = null;
+
+            var fs = File.OpenWrite(path);
+
+            if (path.IndexOf(".xlsx") > 0) // 2007版本 
+            {
+                workbook = new XSSFWorkbook();
+            }
+            else if (path.IndexOf(".xls") > 0) // 2003版本
+            {
+                workbook = new HSSFWorkbook();
+            }
+
+            classes.ForEach(_class =>
+            {
+                ISheet sheet = workbook.CreateSheet(string.Format("班级{0}", _class.ID));
+
+                int rowIndex = 0;
+                int colIndex = 0;
+
+                var row = sheet.CreateRow(rowIndex++);
+
+                headers.ForEach(header =>
+                {
+                    row.CreateCell(colIndex++).SetCellValue(header);
+                });
+
+                _class.Students.ForEach(student =>
+                {
+                    colIndex = 0;
+                    row = sheet.CreateRow(rowIndex++);
+
+                    row.CreateCell(colIndex++).SetCellValue(student.Name);
+                    row.CreateCell(colIndex++).SetCellValue(student.Chinese);
+                    row.CreateCell(colIndex++).SetCellValue(student.Math);
+                    row.CreateCell(colIndex++).SetCellValue(student.English);
+                    row.CreateCell(colIndex++).SetCellValue(student.Physics);
+                    row.CreateCell(colIndex++).SetCellValue(student.Chemistry);
+                    row.CreateCell(colIndex++).SetCellValue(student.Biology);
+                    row.CreateCell(colIndex++).SetCellValue(student.Score);
+                    row.CreateCell(colIndex++).SetCellValue(student.Hometown);
+                    row.CreateCell(colIndex++).SetCellValue(student.Sex);
+                    row.CreateCell(colIndex++).SetCellValue(student.Lodge);                    
+                });
+            });
+
+            workbook.Write(fs);
+
+            fs.Close();
         }
     }
 }

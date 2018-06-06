@@ -19,7 +19,47 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
             set;
         }
 
-        public Sex Sex
+        public double Chinese
+        {
+            get;
+            set;
+        }
+
+        public double Math
+        {
+            get;
+            set;
+        }
+
+        public double English
+        {
+            get;
+            set;
+        }
+
+        public double Physics
+        {
+            get;
+            set;
+        }
+
+        public double Chemistry
+        {
+            get; set;
+        }
+
+        public double Biology
+        {
+            get; set;
+        }
+
+        public bool IsMale
+        {
+            get;
+            set;
+        }
+
+        public string Sex
         {
             get;
             set;
@@ -31,7 +71,19 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
             set;
         }
 
+        public string Lodge
+        {
+            get;
+            set;
+        }
+
         public bool IsDowntown
+        {
+            get;
+            set;
+        }
+
+        public string Hometown
         {
             get;
             set;

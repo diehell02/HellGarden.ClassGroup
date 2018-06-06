@@ -1,6 +1,7 @@
 ﻿using HellGarden.ClassGroup.Contracts.Interface;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
@@ -19,39 +20,29 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
             set;
         }
 
-        public double GetWeight(string propertyName)
+        public static double GetValue(string propertyName, List<IStudent> students)
         {
-            Type type = typeof(IStudent).GetProperty(propertyName).DeclaringType;
+            PropertyInfo propertyInfo = typeof(Student).GetProperty(propertyName);
+            Type type = propertyInfo.PropertyType;
 
-            if(type == typeof(double))
+            if (type == typeof(double))
             {
                 double sum = 0;
 
-                Students.ForEach(student =>
+                students.ForEach(student =>
                 {
-                    sum += student.Score;
+                    sum += (double)(propertyInfo.GetValue(student));
                 });
 
-                return sum / (double)Students.Count;
+                return sum / (double)students.Count;
             }
             else if(type == typeof(bool))
             {
                 double sum = 0;
 
-                Students.ForEach(student =>
+                students.ForEach(student =>
                 {
-                    sum += (bool)(student.GetType().GetProperty(propertyName).GetValue(student)) == true ? 1 : 0;
-                });
-
-                return sum;
-            }
-            else if (type.IsEnum)
-            {
-                double sum = 0;
-
-                Students.ForEach(student =>
-                {
-                    sum += student.Sex == Sex.Male ? 1 : 0;
+                    sum += (bool)(propertyInfo.GetValue(student)) == true ? 1 : 0;
                 });
 
                 return sum;

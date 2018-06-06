@@ -23,9 +23,9 @@ namespace HellGarden.ClassGroup.Contracts.Interface
         }
 
         /// <summary>
-        /// 获取权重
+        /// 获取数值
         /// </summary>
         /// <returns></returns>
-        double GetWeight(string propertyName);
+        // double GetValue(string propertyName);
     }
 }
