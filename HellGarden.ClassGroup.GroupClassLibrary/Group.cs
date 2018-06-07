@@ -33,6 +33,96 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                 new Weight("IsMale", 3, 100, Student.GetIsMaleAvg),
                 new Weight("IsLodge", 3, 50, Student.GetIsLodgeAvg),
                 new Weight("IsDowntown", 3, 100, Student.GetIsDowntownAvg),
+                //new Weight("Chinese", student => student.Chinese),
+                //new Weight("Math", student => student.Math),
+                //new Weight("English", student => student.English),
+                //new Weight("Physics", student => student.Physics),
+                //new Weight("Chemistry", student => student.Chemistry),
+                //new Weight("Biology", student => student.Biology),
+                //new Weight("IsMale", 3, 100, student => student.IsMale == true ? 1 : 0),
+                //new Weight("IsLodge", 3, 50, student => student.IsLodge == true ? 1 : 0),
+                //new Weight("IsDowntown", 3, 100, student => student.IsDowntown == true ? 1 : 0),
+                //new Weight("Chinese", students => MathUtil.Average(students, student => student.Chinese)),
+                //new Weight("Math", students => MathUtil.Average(students, student => student.Math)),
+                //new Weight("English", students => MathUtil.Average(students, student => student.English)),
+                //new Weight("Physics", students => MathUtil.Average(students, student => student.Physics)),
+                //new Weight("Chemistry", students => MathUtil.Average(students, student => student.Chemistry)),
+                //new Weight("Biology", students => MathUtil.Average(students, student => student.Biology)),
+                //new Weight("IsMale", 3, 100, students => MathUtil.Average(students, student => student.IsMale == true ? 1 : 0)),
+                //new Weight("IsLodge", 3, 50, students => MathUtil.Average(students, student => student.IsLodge == true ? 1 : 0)),
+                //new Weight("IsDowntown", 3, 100, students => MathUtil.Average(students, student => student.IsDowntown == true ? 1 : 0)),
+                //new Weight("Chinese", students => {
+                //    double sum = 0;
+                //    foreach(var student in students)
+                //            {
+                //                sum += student.Chinese;
+                //            }
+                //    return sum / students.Length;
+                //}),
+                //new Weight("Math", students => {
+                //    double sum = 0;
+                //    foreach(var student in students)
+                //            {
+                //                sum += student.Math;
+                //            }
+                //    return sum / students.Length;
+                //}),
+                //new Weight("English", students => {
+                //    double sum = 0;
+                //    foreach(var student in students)
+                //            {
+                //                sum += student.English;
+                //            }
+                //    return sum / students.Length;
+                //}),
+                //new Weight("Physics", students => {
+                //    double sum = 0;
+                //    foreach(var student in students)
+                //            {
+                //                sum += student.Physics;
+                //            }
+                //    return sum / students.Length;
+                //}),
+                //new Weight("Chemistry", students => {
+                //    double sum = 0;
+                //    foreach(var student in students)
+                //            {
+                //                sum += student.Chemistry;
+                //            }
+                //    return sum / students.Length;
+                //}),
+                //new Weight("Biology", students => {
+                //    double sum = 0;
+                //    foreach(var student in students)
+                //            {
+                //                sum += student.Biology;
+                //            }
+                //    return sum / students.Length;
+                //}),
+                //new Weight("IsMale", 3, 100, students => {
+                //    double sum = 0;
+                //    foreach(var student in students)
+                //            {
+                //                sum += student.IsMale == true ? 1 : 0;
+                //            }
+                //    return sum / students.Length;
+                //}),
+                //new Weight("IsLodge", 3, 50, students => {
+                //    double sum = 0;
+                //    foreach(var student in students)
+                //            {
+                //                sum += student.IsLodge == true ? 1 : 0;
+                //            }
+                //    return sum / students.Length;
+                //}),
+                //new Weight("IsDowntown", 3, 100, students => {
+                //    double sum = 0;
+                //    foreach(var student in students)
+                //            {
+                //                sum += student.IsDowntown == true ? 1 : 0;
+                //            }
+                //    return sum / students.Length;
+                //}),
             };
         }
 
@@ -87,6 +177,10 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                 timerCount++;
             };
 
+            Stopwatch stopwatch = new Stopwatch();
+
+            stopwatch.Start();
+
             while (count > 0)
             {
                 List<IStudent> _students = Swap(students);
@@ -109,6 +203,8 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
             }
 
             Task.WaitAll();
+
+            stopwatch.Stop();
 
             timer.Stop();
 
@@ -136,9 +232,9 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
         {
             int studentCount = students.Count / classCount;
 
-            IStudent[] studentsArr = students.ToArray();
+            //IStudent[] studentsArr = students.ToArray();
 
-            var result = ArrayUtil.SplitArray(studentsArr, studentCount);
+            var result = ArrayUtil.SplitArray(students, studentCount);
 
             return result;
         }

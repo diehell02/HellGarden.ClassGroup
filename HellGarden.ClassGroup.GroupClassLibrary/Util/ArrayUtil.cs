@@ -12,18 +12,65 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Util
         public static List<T[]> SplitArray<T>(T[] data, int size)
         {
             List<T[]> list = new List<T[]>();
+
             for (int i = 0; i < data.Length / size; i++)
             {
                 T[] r = new T[size];
                 Array.Copy(data, i * size, r, 0, size);
                 list.Add(r);
             }
+
             if (data.Length % size != 0)
             {
                 T[] r = new T[data.Length % size];
                 Array.Copy(data, data.Length - data.Length % size, r, 0, data.Length % size);
+
+                for(int i = 0; i < r.Length; i++)
+                {
+                    var _r = r[i];
+                    var temp = list[i];
+                    var n = new T[temp.Length + 1];
+
+                    Array.Copy(temp, n, temp.Length);
+                    n[temp.Length] = _r;
+
+                    list[i] = n;
+                }
+            }
+
+            return list;
+        }
+
+        //拆分任意类型数组  
+        public static List<T[]> SplitArray<T>(List<T> data, int size)
+        {
+            List<T[]> list = new List<T[]>();
+
+            for (int i = 0; i < data.Count / size; i++)
+            {
+                T[] r = new T[size];
+                data.CopyTo(i * size, r, 0, size);
                 list.Add(r);
             }
+
+            if (data.Count % size != 0)
+            {
+                T[] r = new T[data.Count % size];
+                data.CopyTo(data.Count - data.Count % size, r, 0, data.Count % size);
+
+                for (int i = 0; i < r.Length; i++)
+                {
+                    var _r = r[i];
+                    var temp = list[i];
+                    var n = new T[temp.Length + 1];
+
+                    Array.Copy(temp, n, temp.Length);
+                    n[temp.Length] = _r;
+
+                    list[i] = n;
+                }
+            }
+
             return list;
         }
 

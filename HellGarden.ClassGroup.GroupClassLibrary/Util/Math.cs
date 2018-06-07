@@ -9,37 +9,35 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Util
 {
     class MathUtil
     {
-        public static double Variance(List<IStudent[]> list, Func<IStudent[], double> func)
+        public static double Variance<T>(List<T> list, Func<T, double> func)
         {
             double sum = 0;
             double avg = 0;
-            List<double> values = new List<double>();
+            double[] values = new double[list.Count];
 
-            list.ForEach(item =>
+            for(int i = 0; i < list.Count; i++)
             {
-                double value = func.Invoke(item);
-                values.Add(value);
+                var item = list[i];
 
-                sum += value;
-            });
+                values[i] = func.Invoke(item);
+            }
 
-            avg = sum / (double)list.Count;
-            sum = 0;
+            avg = Average(values);
 
-            values.ForEach(value =>
+            foreach(var value in values)
             {
                 sum += Math.Pow(value - avg, 2);
-            });
+            }
 
-            return sum / (double)values.Count;
+            return sum / values.Length;
         }
 
-        public static double Average(IStudent[] array, Func<IStudent, double> func)
+        public static double Average(double[] array)
         {
             double sum = 0;
             foreach (var item in array)
             {
-                sum += func.Invoke(item);
+                sum += item;
             }
             return sum / array.Length;
         }
