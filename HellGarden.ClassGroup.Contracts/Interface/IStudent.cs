@@ -33,12 +33,12 @@ namespace HellGarden.ClassGroup.Contracts.Interface
         double Math
         {
             get;
-        }
+        }        
 
         double English
         {
             get;
-        }
+        }        
 
         double Physics
         {

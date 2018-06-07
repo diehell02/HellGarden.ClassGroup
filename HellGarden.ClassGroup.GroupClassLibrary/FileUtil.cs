@@ -114,7 +114,9 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                     row.CreateCell(colIndex++).SetCellValue(header);
                 });
 
-                _class.Students.ForEach(student =>
+                var students = _class.Students;
+
+                foreach(var student in students)
                 {
                     colIndex = 0;
                     row = sheet.CreateRow(rowIndex++);
@@ -129,8 +131,8 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                     row.CreateCell(colIndex++).SetCellValue(student.Score);
                     row.CreateCell(colIndex++).SetCellValue(student.Hometown);
                     row.CreateCell(colIndex++).SetCellValue(student.Sex);
-                    row.CreateCell(colIndex++).SetCellValue(student.Lodge);                    
-                });
+                    row.CreateCell(colIndex++).SetCellValue(student.Lodge);
+                }
             });
 
             workbook.Write(fs);

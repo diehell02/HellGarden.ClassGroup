@@ -7,11 +7,35 @@ using HellGarden.ClassGroup.GroupClassLibrary.Entity;
 using HellGarden.ClassGroup.GroupClassLibrary.Util;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Diagnostics;
 
 namespace HellGarden.ClassGroup.GroupClassLibrary
 {
     public class Group : IGroup
     {
+        double minWeight = double.MaxValue;
+        List<IClass> result = null;
+        Dictionary<string, double> weightDic = new Dictionary<string, double>();
+        object lockObj = new object();
+
+        List<Weight> propertyList = null;
+
+        public Group()
+        {
+            propertyList = new List<Weight>()
+            {
+                new Weight("Chinese", Student.GetChineseAvg),
+                new Weight("Math", Student.GetMathAvg),
+                new Weight("English", Student.GetEnglishAvg),
+                new Weight("Physics", Student.GetPhysicsAvg),
+                new Weight("Chemistry", Student.GetChemistryAvg),
+                new Weight("Biology", Student.GetBiologyAvg),
+                new Weight("IsMale", 3, 100, Student.GetIsMaleAvg),
+                new Weight("IsLodge", 3, 50, Student.GetIsLodgeAvg),
+                new Weight("IsDowntown", 3, 100, Student.GetIsDowntownAvg),
+            };
+        }
+
         public List<IClass> Grouping(List<IStudent> students, int classCount, int repeatCount, bool IsMultithreading, Action<string> action = null)
         {
             List<IClass> result = null;
@@ -67,7 +91,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
             {
                 List<IStudent> _students = Swap(students);
 
-                List<List<IStudent>> studentsList = initClasses(_students, classCount);
+                List<IStudent[]> studentsList = initClasses(_students, classCount);
 
                 if(IsMultithreading)
                 {
@@ -108,39 +132,18 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
             return _students;
         }
 
-        private List<List<IStudent>> initClasses(List<IStudent> students, int classCount)
+        private List<IStudent[]> initClasses(List<IStudent> students, int classCount)
         {
-            //List<IClass> classes = new List<IClass>();
-            List<List<IStudent>> studentsList = new List<List<IStudent>>();
-            //int id = 1;
-
             int studentCount = students.Count / classCount;
 
-            int index = studentCount;
-            for (int i = 0; i < students.Count; i += studentCount)
-            {
-                List<IStudent> _students = null;
+            IStudent[] studentsArr = students.ToArray();
 
-                //if(id == classCount)
-                if(studentsList.Count == classCount - 1)
-                {
-                    _students = students.Take(students.Count).Skip(i).ToList();
-                    i = students.Count;
-                }
-                else
-                {
-                    _students = students.Take(i + studentCount).Skip(i).ToList();
-                }
+            var result = ArrayUtil.SplitArray(studentsArr, studentCount);
 
-                //classes.Add(new Class() { ID = id++, Students = _students });
-                studentsList.Add(_students);
-            }
-
-            //return classes;
-            return studentsList;
+            return result;
         }
 
-        private List<IClass> CreateClasses(List<List<IStudent>> studentsList)
+        private List<IClass> CreateClasses(List<IStudent[]> studentsList)
         {
             List<IClass> classes = new List<IClass>();
 
@@ -152,26 +155,8 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
             return classes;
         }
 
-        double minWeight = double.MaxValue;
-        List<IClass> result = null;
-        Dictionary<string, double> weightDic = new Dictionary<string, double>();
-        object lockObj = new object();
-
-        private List<IClass> CalculateWeight(List<List<IStudent>> studentsList)
+        private List<IClass> CalculateWeight(List<IStudent[]> studentsList)
         {
-            List<Weight> propertyList = new List<Weight>()
-            {
-                new Weight("Chinese"),
-                new Weight("Math"),
-                new Weight("English"),
-                new Weight("Physics"),
-                new Weight("Chemistry"),
-                new Weight("Biology"),
-                new Weight("IsMale", 3, 100),
-                new Weight("IsLodge", 3, 50),
-                new Weight("IsDowntown", 3, 100),
-            };
-
             double sumVariance = 0;
             //Dictionary<string, double> _weightDic = new Dictionary<string, double>();
 
@@ -179,10 +164,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
             {
                 string propertyName = weight.PropertyName;
 
-                double variance = MathUtil.Variance(studentsList, students =>
-                {
-                    return Class.GetValue(propertyName, students);
-                });
+                double variance = MathUtil.Variance(studentsList, weight.Func);
 
                 //_weightDic.Add(propertyName, variance);
 
@@ -194,7 +176,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                 sumVariance += variance;
             });
 
-            lock(lockObj)
+            lock (lockObj)
             {
                 if (sumVariance < minWeight)
                 {

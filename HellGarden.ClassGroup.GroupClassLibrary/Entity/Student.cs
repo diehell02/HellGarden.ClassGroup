@@ -88,5 +88,95 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
             get;
             set;
         }
+
+        public static double GetChineseAvg(IStudent[] students)
+        {
+            double sum = 0;
+            foreach (var student in students)
+            {
+                sum += student.Chinese;
+            }
+            return sum / students.Length;
+        }
+
+        public static double GetMathAvg(IStudent[] students)
+        {
+            double sum = 0;
+            foreach (var student in students)
+            {
+                sum += student.Math;
+            }
+            return sum / students.Length;
+        }
+
+        public static double GetEnglishAvg(IStudent[] students)
+        {
+            double sum = 0;
+            foreach (var student in students)
+            {
+                sum += student.English;
+            }
+            return sum / students.Length;
+        }
+
+        public static double GetPhysicsAvg(IStudent[] students)
+        {
+            double sum = 0;
+            foreach (var student in students)
+            {
+                sum += student.Physics;
+            }
+            return sum / students.Length;
+        }
+
+        public static double GetChemistryAvg(IStudent[] students)
+        {
+            double sum = 0;
+            foreach (var student in students)
+            {
+                sum += student.Chemistry;
+            }
+            return sum / students.Length;
+        }
+
+        public static double GetBiologyAvg(IStudent[] students)
+        {
+            double sum = 0;
+            foreach (var student in students)
+            {
+                sum += student.Biology;
+            }
+            return sum / students.Length;
+        }
+
+        public static double GetIsMaleAvg(IStudent[] students)
+        {
+            double sum = 0;
+            foreach (var student in students)
+            {
+                sum += student.IsMale == true ? 1 : 0;
+            }
+            return sum / students.Length;
+        }
+
+        public static double GetIsLodgeAvg(IStudent[] students)
+        {
+            double sum = 0;
+            foreach (var student in students)
+            {
+                sum += student.IsLodge == true ? 1 : 0;
+            }
+            return sum / students.Length;
+        }
+
+        public static double GetIsDowntownAvg(IStudent[] students)
+        {
+            double sum = 0;
+            foreach (var student in students)
+            {
+                sum += student.IsDowntown == true ? 1 : 0;
+            }
+            return sum / students.Length;
+        }
     }
 }

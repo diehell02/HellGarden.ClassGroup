@@ -17,7 +17,7 @@ namespace HellGarden.ClassGroup.Contracts.Interface
         /// <summary>
         /// 学生
         /// </summary>
-        List<IStudent> Students
+        IStudent[] Students
         {
             get;
         }

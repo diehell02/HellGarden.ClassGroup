@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HellGarden.ClassGroup.Contracts.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Util
 {
     class MathUtil
     {
-        public static double Variance<T>(List<T> list, Func<T, double> func)
+        public static double Variance(List<IStudent[]> list, Func<IStudent[], double> func)
         {
             double sum = 0;
             double avg = 0;
@@ -31,6 +32,16 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Util
             });
 
             return sum / (double)values.Count;
+        }
+
+        public static double Average(IStudent[] array, Func<IStudent, double> func)
+        {
+            double sum = 0;
+            foreach (var item in array)
+            {
+                sum += func.Invoke(item);
+            }
+            return sum / array.Length;
         }
     }
 }
