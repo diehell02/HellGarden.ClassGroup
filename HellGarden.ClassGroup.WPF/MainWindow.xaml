@@ -29,6 +29,6 @@
         <Label Grid.Row="2" Grid.Column="0" Margin="5" Content="循环次数" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBox Grid.Row="2" Grid.Column="1" Name="RepeatCountTextBox" Margin="10,0" HorizontalAlignment="Center" Height="31" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="350"/>
         <Button Grid.Row="4" Grid.Column="2" Margin="5" Content="生成" Click="Generate_Click"/>
-        <TextBlock Grid.Row="5" Grid.ColumnSpan="3" Margin="10" Name="PrintMsg"/>
+        <TextBox Margin="10" Grid.Row="5" Grid.ColumnSpan="3" Name="PrintMsg" Height="150" VerticalScrollBarVisibility="Hidden" TextWrapping="Wrap"/>
     </Grid>
 </Window>

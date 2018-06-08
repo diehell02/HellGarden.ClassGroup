@@ -88,16 +88,16 @@ namespace HellGarden.ClassGroup.WPF
 
                         PrintMsg.Dispatcher.Invoke(() =>
                         {
-                            PrintMsg.Inlines.Add(new Run("计算中，请勿手贱乱碰..."));
-                            PrintMsg.Inlines.Add(new LineBreak());
+                            PrintMsg.AppendText("计算中，请勿手贱乱碰..." + "\n");
+                            PrintMsg.ScrollToEnd();
                         });
 
                         var classes = group.Grouping(students, classCount, repeatCount, IsMultithreading, message =>
                         {
                             PrintMsg.Dispatcher.Invoke(() =>
                             {
-                                PrintMsg.Inlines.Add(new Run(message));
-                                PrintMsg.Inlines.Add(new LineBreak());
+                                PrintMsg.AppendText(message + "\n");
+                                PrintMsg.ScrollToEnd();
                             });
                         });
 
@@ -105,8 +105,8 @@ namespace HellGarden.ClassGroup.WPF
 
                         PrintMsg.Dispatcher.Invoke(() =>
                         {
-                            PrintMsg.Inlines.Add(new Run("生成完成"));
-                            PrintMsg.Inlines.Add(new LineBreak());
+                            PrintMsg.AppendText("生成完成" + "\n");
+                            PrintMsg.ScrollToEnd();
                         });
                     }
                     catch(Exception ex)

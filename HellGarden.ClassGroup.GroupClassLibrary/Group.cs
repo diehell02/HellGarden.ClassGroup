@@ -82,7 +82,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                         break;
                 }
 
-                message += string.Format("\n当前循环还剩余{0}次", count);
+                //message += string.Format("\n当前循环还剩余{0}次", count);
 
                 action?.Invoke(message);
 
