@@ -71,7 +71,7 @@ namespace HellGarden.ClassGroup.WPF
 
                 if (!int.TryParse(RepeatCountTextBox.Text, out repeatCount))
                 {
-                    MessageBox.Show("班级数量输入不正确");
+                    MessageBox.Show("循环次数输入不正确");
                     return;
                 }
 

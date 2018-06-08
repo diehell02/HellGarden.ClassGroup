@@ -60,13 +60,14 @@ namespace HellGarden.ClassGroup.GroupConsole
                     classCountString = Console.ReadLine();
                 }
 
-                Console.WriteLine("循环次数(默认10万次)：");
+                Console.WriteLine("最大循环次数(封顶10次)：");
                 string repeatCountString = Console.ReadLine();
                 int repeatCount = 0;
 
                 while (!int.TryParse(repeatCountString, out repeatCount))
                 {
-                    repeatCount = 100000;
+                    Console.WriteLine("给劳资输入数字：");
+                    repeatCountString = Console.ReadLine();
                 }
 
                 Console.WriteLine("计算中，请勿手贱乱碰...");

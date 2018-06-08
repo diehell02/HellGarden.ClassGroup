@@ -156,7 +156,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
             {
                 sum += student.IsMale == true ? 1 : 0;
             }
-            return sum / students.Length;
+            return sum / students.Length * 100;
         }
 
         public static double GetIsLodgeAvg(IStudent[] students)
@@ -166,7 +166,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
             {
                 sum += student.IsLodge == true ? 1 : 0;
             }
-            return sum / students.Length;
+            return sum / students.Length * 100;
         }
 
         public static double GetIsDowntownAvg(IStudent[] students)
@@ -176,7 +176,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
             {
                 sum += student.IsDowntown == true ? 1 : 0;
             }
-            return sum / students.Length;
+            return sum / students.Length * 100;
         }
     }
 }

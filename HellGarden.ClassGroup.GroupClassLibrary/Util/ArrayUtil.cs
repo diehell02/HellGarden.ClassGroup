@@ -11,30 +11,38 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Util
         //拆分任意类型数组  
         public static List<T[]> SplitArray<T>(T[] data, int size)
         {
-            List<T[]> list = new List<T[]>();
+            int length = data.Length / size;
+            int remainder = data.Length % size;
 
-            for (int i = 0; i < data.Length / size; i++)
+            List<T[]> list = new List<T[]>(length);
+
+            for (int i = 0; i < length; i++)
             {
-                T[] r = new T[size];
+                T[] r = null;
+
+                if (i < remainder)
+                {
+                    r = new T[size + 1];
+                }
+                else
+                {
+                    r = new T[size];
+                }
+
                 Array.Copy(data, i * size, r, 0, size);
                 list.Add(r);
             }
 
-            if (data.Length % size != 0)
+            if (remainder != 0)
             {
-                T[] r = new T[data.Length % size];
-                Array.Copy(data, data.Length - data.Length % size, r, 0, data.Length % size);
+                T[] r = new T[remainder];
+                Array.Copy(data, data.Length - remainder, r, 0, remainder);
 
                 for(int i = 0; i < r.Length; i++)
                 {
-                    var _r = r[i];
-                    var temp = list[i];
-                    var n = new T[temp.Length + 1];
+                    var item = list[i];
 
-                    Array.Copy(temp, n, temp.Length);
-                    n[temp.Length] = _r;
-
-                    list[i] = n;
+                    item[item.Length - 1] = r[i];
                 }
             }
 
@@ -44,30 +52,38 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Util
         //拆分任意类型数组  
         public static List<T[]> SplitArray<T>(List<T> data, int size)
         {
-            List<T[]> list = new List<T[]>();
+            int length = data.Count / size;
+            int remainder = data.Count % size;
 
-            for (int i = 0; i < data.Count / size; i++)
+            List<T[]> list = new List<T[]>(length);
+
+            for (int i = 0; i < length; i++)
             {
-                T[] r = new T[size];
+                T[] r = null;
+
+                if(i < remainder)
+                {
+                    r = new T[size + 1];
+                }
+                else
+                {
+                    r = new T[size];
+                }
+
                 data.CopyTo(i * size, r, 0, size);
                 list.Add(r);
             }
 
             if (data.Count % size != 0)
             {
-                T[] r = new T[data.Count % size];
-                data.CopyTo(data.Count - data.Count % size, r, 0, data.Count % size);
+                T[] r = new T[remainder];
+                data.CopyTo(data.Count - remainder, r, 0, remainder);
 
                 for (int i = 0; i < r.Length; i++)
                 {
-                    var _r = r[i];
-                    var temp = list[i];
-                    var n = new T[temp.Length + 1];
+                    var item = list[i];
 
-                    Array.Copy(temp, n, temp.Length);
-                    n[temp.Length] = _r;
-
-                    list[i] = n;
+                    item[item.Length - 1] = r[i];
                 }
             }
 
