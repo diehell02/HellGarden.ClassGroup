@@ -77,7 +77,7 @@ namespace HellGarden.ClassGroup.WPF
 
                 IsMultithreading = (bool)MultithreadingCheckBox.IsChecked;
 
-                Task.Run(() =>
+                PrintMsg.Dispatcher.Invoke(() =>
                 {
                     try
                     {
@@ -86,33 +86,24 @@ namespace HellGarden.ClassGroup.WPF
                         var students = fileUtil.Load(importFileName);
                         var group = new Group();
 
-                        PrintMsg.Dispatcher.Invoke(() =>
-                        {
-                            PrintMsg.AppendText("计算中，请勿手贱乱碰..." + "\n");
-                            PrintMsg.ScrollToEnd();
-                        });
+                        PrintMsg.AppendText("计算中，请勿手贱乱碰..." + "\n");
+                        PrintMsg.ScrollToEnd();
 
                         var classes = group.Grouping(students, classCount, repeatCount, IsMultithreading, message =>
                         {
-                            PrintMsg.Dispatcher.Invoke(() =>
-                            {
-                                PrintMsg.AppendText(message + "\n");
-                                PrintMsg.ScrollToEnd();
-                            });
+                            PrintMsg.AppendText(message + "\n");
+                            PrintMsg.ScrollToEnd();
                         });
 
                         fileUtil.Save(outportFileName, classes);
 
-                        PrintMsg.Dispatcher.Invoke(() =>
-                        {
-                            PrintMsg.AppendText("生成完成" + "\n");
-                            PrintMsg.ScrollToEnd();
-                        });
+                        PrintMsg.AppendText("生成完成" + "\n");
+                        PrintMsg.ScrollToEnd();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show("异常", ex.ToString());
-                    }                                
+                    }
                 });
             }
         }
