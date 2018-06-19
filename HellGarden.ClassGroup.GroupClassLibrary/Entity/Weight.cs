@@ -6,43 +6,59 @@ using System.Text;
 
 namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
 {
-    class Weight
+    class Weight : IWeight
     {
-        public Weight(WeightProperty weightProperty, Func<IStudent[], double> func)
-        {
-            this.WeightProperty = weightProperty;
-            this.Limit = 0;
-            this.Multiple = 1;
-            this.Func = func;
-        }
-
-        public Weight(WeightProperty weightProperty, int limit, int multiple, Func<IStudent[], double> func)
-        {
-            this.WeightProperty = weightProperty;
-            this.Limit = limit;
-            this.Multiple = multiple;
-            this.Func = func;
-        }
-
-        public WeightProperty WeightProperty
+        public int ID
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// 列序号
+        /// </summary>
+        public int Index
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 名称
+        /// </summary>
+        public string Name
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 类型
+        /// </summary>
+        public WeightType Type
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 枚举值
+        /// </summary>
+        public string EnumValue
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 方差限制
+        /// </summary>
         public int Limit
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// 倍数
+        /// </summary>
         public int Multiple
-        {
-            get;
-            set;
-        }
-
-        public Func<IStudent[], double> Func
         {
             get;
             set;

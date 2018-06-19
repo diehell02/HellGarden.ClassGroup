@@ -23,11 +23,11 @@ namespace HellGarden.ClassGroup.Contracts.Interface
             get;
         }
 
-        IDictionary<WeightProperty, double> Avgs
+        IDictionary<int, double> WeightValues
         {
             get;
         }
 
-        void InitAvgs(IStudent[] Students = null);
+        void InitWeightValues();
     }
 }

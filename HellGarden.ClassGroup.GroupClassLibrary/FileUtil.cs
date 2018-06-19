@@ -1,4 +1,5 @@
 ﻿using HellGarden.ClassGroup.Contracts.Interface;
+using HellGarden.ClassGroup.GroupClassLibrary.Config;
 using HellGarden.ClassGroup.GroupClassLibrary.Entity;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
@@ -62,21 +63,44 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
 
                     IStudent student = new Student()
                     {
-                        Name = cells.GetCell(0).StringCellValue,
-                        Chinese = cells.GetCell(1).NumericCellValue,
-                        Math = cells.GetCell(2).NumericCellValue,
-                        English = cells.GetCell(3).NumericCellValue,
-                        Physics = cells.GetCell(4).NumericCellValue,
-                        Chemistry = cells.GetCell(5).NumericCellValue,
-                        Biology = cells.GetCell(6).NumericCellValue,
-                        Score = cells.GetCell(7).NumericCellValue,
-                        IsMale = cells.GetCell(9).StringCellValue == "男" ? true : false,
-                        Sex = cells.GetCell(9).StringCellValue,
-                        IsLodge = cells.GetCell(10).StringCellValue == "寄宿" ? true: false,
-                        Lodge = cells.GetCell(10).StringCellValue,
-                        IsDowntown = cells.GetCell(8).StringCellValue == "市直" ? true : false,
-                        Hometown = cells.GetCell(8).StringCellValue,
+                        //Name = cells.GetCell(0).StringCellValue,
+                        //Chinese = cells.GetCell(1).NumericCellValue,
+                        //Math = cells.GetCell(2).NumericCellValue,
+                        //English = cells.GetCell(3).NumericCellValue,
+                        //Physics = cells.GetCell(4).NumericCellValue,
+                        //Chemistry = cells.GetCell(5).NumericCellValue,
+                        //Biology = cells.GetCell(6).NumericCellValue,
+                        //Score = cells.GetCell(7).NumericCellValue,
+                        //IsMale = cells.GetCell(9).StringCellValue == "男" ? true : false,
+                        //Sex = cells.GetCell(9).StringCellValue,
+                        //IsLodge = cells.GetCell(10).StringCellValue == "寄宿" ? true: false,
+                        //Lodge = cells.GetCell(10).StringCellValue,
+                        //IsDowntown = cells.GetCell(8).StringCellValue == "市直" ? true : false,
+                        //Hometown = cells.GetCell(8).StringCellValue,
                     };
+
+                    for(int i = 0; i < cells.LastCellNum; i++)
+                    {
+                        student.RawValues.Add(cells.GetCell(i).ToString());
+                    }
+
+                    for (int i = 0; i < WeightConfig.Weights.Length; i++)
+                    {
+                        var weight = WeightConfig.Weights[i];
+
+                        double value = 0;
+
+                        if (string.IsNullOrEmpty(weight.EnumValue))
+                        {
+                            value = cells.GetCell(weight.Index).NumericCellValue;
+                        }
+                        else
+                        {
+                            value = cells.GetCell(weight.Index).StringCellValue == weight.EnumValue ? 1 : 0;
+                        }
+
+                        student.WeightValues[weight.ID] = value;
+                    }
 
                     students.Add(student);
                 }
@@ -121,17 +145,22 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                     colIndex = 0;
                     row = sheet.CreateRow(rowIndex++);
 
-                    row.CreateCell(colIndex++).SetCellValue(student.Name);
-                    row.CreateCell(colIndex++).SetCellValue(student.Chinese);
-                    row.CreateCell(colIndex++).SetCellValue(student.Math);
-                    row.CreateCell(colIndex++).SetCellValue(student.English);
-                    row.CreateCell(colIndex++).SetCellValue(student.Physics);
-                    row.CreateCell(colIndex++).SetCellValue(student.Chemistry);
-                    row.CreateCell(colIndex++).SetCellValue(student.Biology);
-                    row.CreateCell(colIndex++).SetCellValue(student.Score);
-                    row.CreateCell(colIndex++).SetCellValue(student.Hometown);
-                    row.CreateCell(colIndex++).SetCellValue(student.Sex);
-                    row.CreateCell(colIndex++).SetCellValue(student.Lodge);
+                    for(int i = 0; i < student.RawValues.Count; i++)
+                    {
+                        row.CreateCell(colIndex++).SetCellValue(student.RawValues[i]);
+                    }
+
+                    //row.CreateCell(colIndex++).SetCellValue(student.Name);
+                    //row.CreateCell(colIndex++).SetCellValue(student.Chinese);
+                    //row.CreateCell(colIndex++).SetCellValue(student.Math);
+                    //row.CreateCell(colIndex++).SetCellValue(student.English);
+                    //row.CreateCell(colIndex++).SetCellValue(student.Physics);
+                    //row.CreateCell(colIndex++).SetCellValue(student.Chemistry);
+                    //row.CreateCell(colIndex++).SetCellValue(student.Biology);
+                    //row.CreateCell(colIndex++).SetCellValue(student.Score);
+                    //row.CreateCell(colIndex++).SetCellValue(student.Hometown);
+                    //row.CreateCell(colIndex++).SetCellValue(student.Sex);
+                    //row.CreateCell(colIndex++).SetCellValue(student.Lodge);
                 }
             });
 

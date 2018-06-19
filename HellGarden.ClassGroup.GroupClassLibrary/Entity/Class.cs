@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using HellGarden.ClassGroup.GroupClassLibrary.Config;
+using HellGarden.ClassGroup.GroupClassLibrary.Util;
 
 namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
 {
@@ -21,7 +23,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
             set;
         }
 
-        public IDictionary<WeightProperty, double> Avgs
+        public IDictionary<int, double> WeightValues
         {
             get;
             set;
@@ -31,69 +33,99 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
         {
             this.ID = id;
             this.Students = students;
-            InitAvgs(students);
+            InitWeightValues();
         }
 
-        public void InitAvgs(IStudent[] students = null)
+        public void InitWeightValues()
         {
-            if(Avgs is null)
+            if (WeightValues is null)
             {
-                Avgs = new Dictionary<WeightProperty, double>();
+                WeightValues = new Dictionary<int, double>(WeightConfig.Weights.Length);
             }
             else
             {
-                Avgs.Clear();
+                WeightValues.Clear();
             }
 
-            if(students is null)
+            for(int index = 0; index < WeightConfig.Weights.Length; index++)
             {
-                students = Students;
-            }
-            
-            if(!Avgs.ContainsKey(WeightProperty.Chinese))
-            {
-                Avgs.Add(WeightProperty.Chinese, Student.GetChineseAvg(students));
+                var weight = WeightConfig.Weights[index];
+
+                double sum = 0;
+
+                for (int i = 0; i < Students.Length; i++)
+                {
+                    sum += Students[i].WeightValues[weight.ID];
+                }
+
+                if (weight.Type == WeightType.Score)
+                {
+                    WeightValues.Add(index, sum / Students.Length);
+                }
+                else
+                {
+                    WeightValues.Add(index, sum);
+                }
             }
 
-            if (!Avgs.ContainsKey(WeightProperty.Math))
-            {
-                Avgs.Add(WeightProperty.Math, Student.GetMathAvg(students));
-            }
+            //if(Avgs is null)
+            //{
+            //    Avgs = new Dictionary<WeightProperty, double>();
+            //}
+            //else
+            //{
+            //    Avgs.Clear();
+            //}
 
-            if (!Avgs.ContainsKey(WeightProperty.English))
-            {
-                Avgs.Add(WeightProperty.English, Student.GetEnglishAvg(students));
-            }
+            //if(students is null)
+            //{
+            //    students = Students;
+            //}
 
-            if (!Avgs.ContainsKey(WeightProperty.Physics))
-            {
-                Avgs.Add(WeightProperty.Physics, Student.GetPhysicsAvg(students));
-            }
+            //if(!Avgs.ContainsKey(WeightProperty.Chinese))
+            //{
+            //    Avgs.Add(WeightProperty.Chinese, Student.GetChineseAvg(students));
+            //}
 
-            if (!Avgs.ContainsKey(WeightProperty.Chemistry))
-            {
-                Avgs.Add(WeightProperty.Chemistry, Student.GetChemistryAvg(students));
-            }
+            //if (!Avgs.ContainsKey(WeightProperty.Math))
+            //{
+            //    Avgs.Add(WeightProperty.Math, Student.GetMathAvg(students));
+            //}
 
-            if (!Avgs.ContainsKey(WeightProperty.Biology))
-            {
-                Avgs.Add(WeightProperty.Biology, Student.GetBiologyAvg(students));
-            }
+            //if (!Avgs.ContainsKey(WeightProperty.English))
+            //{
+            //    Avgs.Add(WeightProperty.English, Student.GetEnglishAvg(students));
+            //}
 
-            if (!Avgs.ContainsKey(WeightProperty.IsDowntown))
-            {
-                Avgs.Add(WeightProperty.IsDowntown, Student.GetIsDowntownAvg(students));
-            }
+            //if (!Avgs.ContainsKey(WeightProperty.Physics))
+            //{
+            //    Avgs.Add(WeightProperty.Physics, Student.GetPhysicsAvg(students));
+            //}
 
-            if (!Avgs.ContainsKey(WeightProperty.IsLodge))
-            {
-                Avgs.Add(WeightProperty.IsLodge, Student.GetIsLodgeAvg(students));
-            }
+            //if (!Avgs.ContainsKey(WeightProperty.Chemistry))
+            //{
+            //    Avgs.Add(WeightProperty.Chemistry, Student.GetChemistryAvg(students));
+            //}
 
-            if (!Avgs.ContainsKey(WeightProperty.IsMale))
-            {
-                Avgs.Add(WeightProperty.IsMale, Student.GetIsMaleAvg(students));
-            }
+            //if (!Avgs.ContainsKey(WeightProperty.Biology))
+            //{
+            //    Avgs.Add(WeightProperty.Biology, Student.GetBiologyAvg(students));
+            //}
+
+            //if (!Avgs.ContainsKey(WeightProperty.IsDowntown))
+            //{
+            //    Avgs.Add(WeightProperty.IsDowntown, Student.GetIsDowntownAvg(students));
+            //}
+
+            //if (!Avgs.ContainsKey(WeightProperty.IsLodge))
+            //{
+            //    Avgs.Add(WeightProperty.IsLodge, Student.GetIsLodgeAvg(students));
+            //}
+
+            //if (!Avgs.ContainsKey(WeightProperty.IsMale))
+            //{
+            //    Avgs.Add(WeightProperty.IsMale, Student.GetIsMaleAvg(students));
+            //}
         }
     }
 }

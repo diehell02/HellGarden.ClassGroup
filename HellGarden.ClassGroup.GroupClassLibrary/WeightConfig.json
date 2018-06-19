@@ -1,0 +1,74 @@
+﻿[
+  {
+    "Index": 1,
+    "Type": "Score",
+    "Name": "Chinese",
+    "EnumValue": null,
+    "Limit": 10,
+    "Multiple": 10
+  },
+  {
+    "Index": 2,
+    "Type": "Score",
+    "Name": "Math",
+    "EnumValue": null,
+    "Limit": 10,
+    "Multiple": 10
+  },
+  {
+    "Index": 3,
+    "Type": "Score",
+    "Name": "English",
+    "EnumValue": null,
+    "Limit": 10,
+    "Multiple": 10
+  },
+  {
+    "Index": 4,
+    "Type": "Score",
+    "Name": "Physics",
+    "EnumValue": null,
+    "Limit": 10,
+    "Multiple": 10
+  },
+  {
+    "Index": 5,
+    "Type": "Score",
+    "Name": "Chemistry",
+    "EnumValue": null,
+    "Limit": 10,
+    "Multiple": 10
+  },
+  {
+    "Index": 6,
+    "Type": "Score",
+    "Name": "Biology",
+    "EnumValue": null,
+    "Limit": 10,
+    "Multiple": 10
+  },
+  {
+    "Index": 8,
+    "Type": "Enum",
+    "Name": "IsDowntown",
+    "EnumValue": "市直",
+    "Limit": 10,
+    "Multiple": 100
+  },
+  {
+    "Index": 9,
+    "Type": "Enum",
+    "Name": "IsMale",
+    "EnumValue": "男",
+    "Limit": 10,
+    "Multiple": 1000
+  },
+  {
+    "Index": 10,
+    "Type": "Enum",
+    "Name": "IsLodge",
+    "EnumValue": "寄宿",
+    "Limit": 10,
+    "Multiple": 100
+  }
+]

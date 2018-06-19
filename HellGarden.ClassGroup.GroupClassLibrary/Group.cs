@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Diagnostics;
 using HellGarden.ClassGroup.Contracts.Enum;
+using HellGarden.ClassGroup.GroupClassLibrary.Config;
 
 namespace HellGarden.ClassGroup.GroupClassLibrary
 {
@@ -16,27 +17,13 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
     {
         double minWeight = double.MaxValue;
         List<IClass> result = null;
-        Dictionary<WeightProperty, double> weightDic = new Dictionary<WeightProperty, double>();
+        Dictionary<string, double> weightDic = new Dictionary<string, double>();
         object lockObj = new object();
-
-        List<Weight> propertyList = null;
 
         Random random = new Random();
 
         public Group()
         {
-            propertyList = new List<Weight>()
-            {
-                new Weight(WeightProperty.Chinese, 10, 10, Student.GetChineseAvg),
-                new Weight(WeightProperty.Math, 10, 10, Student.GetMathAvg),
-                new Weight(WeightProperty.English, 10, 10, Student.GetEnglishAvg),
-                new Weight(WeightProperty.Physics, 10, 10, Student.GetPhysicsAvg),
-                new Weight(WeightProperty.Chemistry, 10, 10, Student.GetChemistryAvg),
-                new Weight(WeightProperty.Biology, 10, 10, Student.GetBiologyAvg),
-                new Weight(WeightProperty.IsMale, 10, 1000, Student.GetIsMaleAvg),
-                new Weight(WeightProperty.IsLodge, 10, 100, Student.GetIsLodgeAvg),
-                new Weight(WeightProperty.IsDowntown, 10, 100, Student.GetIsDowntownAvg),
-            };
         }
 
         public List<IClass> Grouping(List<IStudent> students, int classCount, int repeatCount, bool IsMultithreading, Action<string> action = null)
@@ -90,9 +77,9 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                 timerCount++;
             };
 
-            Stopwatch stopwatch = new Stopwatch();
+            //Stopwatch stopwatch = new Stopwatch();
 
-            stopwatch.Start();
+            //stopwatch.Start();
 
             int _repeatCount = repeatCount > 10 ? 10 : repeatCount;
 
@@ -128,7 +115,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
 
             Task.WaitAll();
 
-            stopwatch.Stop();
+            //stopwatch.Stop();
 
             timer.Stop();
 
@@ -179,8 +166,15 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
             classes[index1_1].Students[index1_2] = classes[index2_1].Students[index2_2];
             classes[index2_1].Students[index2_2] = temp;
 
-            classes[index1_1].InitAvgs();
-            classes[index2_1].InitAvgs();
+            if (index1_1 == index2_1)
+            {
+                classes[index1_1].InitWeightValues();
+            }
+            else
+            {
+                classes[index1_1].InitWeightValues();
+                classes[index2_1].InitWeightValues();
+            }
 
             return classes;
         }
@@ -209,21 +203,22 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
         private List<IClass> CalculateWeight(List<IClass> classes)
         {
             double sumVariance = 0;
-            Dictionary<WeightProperty, double> _weightDic = new Dictionary<WeightProperty, double>();
+            Dictionary<string, double> _weightDic = new Dictionary<string, double>();
 
-            propertyList.ForEach(weight =>
+            for (int index = 0; index < WeightConfig.Weights.Length; index++)
             {
-                var weightProperty = weight.WeightProperty;
+                var weight = WeightConfig.Weights[index];
+
                 double[] values = new double[classes.Count];
 
-                for(int i = 0; i < classes.Count; i++)
+                for (int i = 0; i < classes.Count; i++)
                 {
-                    values[i] = classes[i].Avgs[weightProperty];
+                    values[i] = classes[i].WeightValues[weight.ID];
                 }
 
                 double variance = MathUtil.Variance(values);
 
-                _weightDic.Add(weightProperty, variance);
+                _weightDic.Add(weight.Name, variance);
 
                 if (variance > weight.Limit)
                 {
@@ -231,7 +226,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                 }
 
                 sumVariance += variance;
-            });
+            }
 
             lock (lockObj)
             {
