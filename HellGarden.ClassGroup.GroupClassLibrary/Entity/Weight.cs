@@ -1,4 +1,5 @@
-﻿using HellGarden.ClassGroup.Contracts.Interface;
+﻿using HellGarden.ClassGroup.Contracts.Enum;
+using HellGarden.ClassGroup.Contracts.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,23 +8,23 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
 {
     class Weight
     {
-        public Weight(string propertyName, Func<IStudent[], double> func)
+        public Weight(WeightProperty weightProperty, Func<IStudent[], double> func)
         {
-            this.PropertyName = propertyName;
+            this.WeightProperty = weightProperty;
             this.Limit = 0;
             this.Multiple = 1;
             this.Func = func;
         }
 
-        public Weight(string propertyName, int limit, int multiple, Func<IStudent[], double> func)
+        public Weight(WeightProperty weightProperty, int limit, int multiple, Func<IStudent[], double> func)
         {
-            this.PropertyName = propertyName;
+            this.WeightProperty = weightProperty;
             this.Limit = limit;
             this.Multiple = multiple;
             this.Func = func;
         }
 
-        public string PropertyName
+        public WeightProperty WeightProperty
         {
             get;
             set;

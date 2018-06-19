@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HellGarden.ClassGroup.Contracts.Enum;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -22,10 +23,11 @@ namespace HellGarden.ClassGroup.Contracts.Interface
             get;
         }
 
-        /// <summary>
-        /// 获取数值
-        /// </summary>
-        /// <returns></returns>
-        // double GetValue(string propertyName);
+        IDictionary<WeightProperty, double> Avgs
+        {
+            get;
+        }
+
+        void InitAvgs(IStudent[] Students = null);
     }
 }

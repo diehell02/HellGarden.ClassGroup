@@ -32,6 +32,21 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Util
             return sum / values.Length;
         }
 
+        public static double Variance(double[] values)
+        {
+            double sum = 0;
+            double avg = 0;
+
+            avg = Average(values);
+
+            foreach (var value in values)
+            {
+                sum += Math.Pow(value - avg, 2);
+            }
+
+            return sum / values.Length;
+        }
+
         public static double Average(double[] array)
         {
             double sum = 0;
