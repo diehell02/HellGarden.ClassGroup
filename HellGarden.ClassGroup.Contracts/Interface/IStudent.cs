@@ -94,7 +94,7 @@ namespace HellGarden.ClassGroup.Contracts.Interface
         //    get;
         //}
 
-        List<string> RawValues
+        List<object> RawValues
         {
             get;
         }

@@ -81,7 +81,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
 
                     for(int i = 0; i < cells.LastCellNum; i++)
                     {
-                        student.RawValues.Add(cells.GetCell(i).ToString());
+                        student.RawValues.Add(cells.GetCell(i));
                     }
 
                     for (int i = 0; i < WeightConfig.Weights.Length; i++)
@@ -89,14 +89,22 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                         var weight = WeightConfig.Weights[i];
 
                         double value = 0;
+                        ICell cell = cells.GetCell(weight.Index);
 
-                        if (string.IsNullOrEmpty(weight.EnumValue))
+                        switch (weight.Type)
                         {
-                            value = cells.GetCell(weight.Index).NumericCellValue;
-                        }
-                        else
-                        {
-                            value = cells.GetCell(weight.Index).StringCellValue == weight.EnumValue ? 1 : 0;
+                            case WeightType.Score:
+                                if(cell.CellType == CellType.Numeric)
+                                {
+                                    value = cell.NumericCellValue;
+                                }                                
+                                break;
+                            case WeightType.Enum:
+                                if(cell.CellType == CellType.String)
+                                {
+                                    value = cells.GetCell(weight.Index).StringCellValue == weight.EnumValue ? 1 : 0;
+                                }                                
+                                break;
                         }
 
                         student.WeightValues[weight.ID] = value;
@@ -147,7 +155,25 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
 
                     for(int i = 0; i < student.RawValues.Count; i++)
                     {
-                        row.CreateCell(colIndex++).SetCellValue(student.RawValues[i]);
+                        var value = student.RawValues[i];
+
+                        if(value is ICell)
+                        {
+                            ICell cell = value as ICell;
+                            switch (cell.CellType)
+                            {
+                                case CellType.String:
+                                    row.CreateCell(colIndex++).SetCellValue(cell.StringCellValue);
+                                    break;
+                                case CellType.Numeric:
+                                    row.CreateCell(colIndex++).SetCellValue(cell.NumericCellValue);
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            row.CreateCell(colIndex++).SetCellValue(value.ToString());
+                        }                        
                     }
 
                     //row.CreateCell(colIndex++).SetCellValue(student.Name);

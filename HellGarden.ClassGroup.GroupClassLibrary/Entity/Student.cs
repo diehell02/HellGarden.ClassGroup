@@ -10,7 +10,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
     {
         public Student()
         {
-            RawValues = new List<string>();
+            RawValues = new List<object>();
             WeightValues = new double[WeightConfig.Weights.Length];
         }
 
@@ -186,7 +186,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
         //    return sum / students.Length * 100;
         //}
 
-        public List<string> RawValues
+        public List<object> RawValues
         {
             get;set;
         }

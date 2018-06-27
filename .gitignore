@@ -260,3 +260,7 @@ paket-files/
 __pycache__/
 *.pyc
 /outport.xlsx
+/Desktop
+/Desktop.rar
+/import_0.xlsx
+/WeightConfig.json

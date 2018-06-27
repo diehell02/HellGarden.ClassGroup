@@ -102,7 +102,7 @@ namespace HellGarden.ClassGroup.WPF
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("异常", ex.ToString());
+                        MessageBox.Show(ex.ToString(), "异常");
                     }
                 });
             }

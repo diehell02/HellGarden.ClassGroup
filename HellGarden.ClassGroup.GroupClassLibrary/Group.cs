@@ -135,46 +135,106 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
             return true;
         }
 
-        private List<IClass> Swap(List<IClass> classes, int studentCount, int studentsCount)
+        private List<IClass> Swap(List<IClass> classes, int classCount, int studentsCount)
         {
             int index1 = random.Next(0, studentsCount);
             int index2 = random.Next(0, studentsCount);
 
-            int index1_1 = index1 / studentCount;
-            if (index1_1 == classes.Count)
+            if(index1 == index2)
             {
-                index1_1--;
-            }
-            int index1_2 = index1 - index1_1 * studentCount - 1;
-            if(index1_2 < 0)
-            {
-                index1_2 = 0;
+                return classes;
             }
 
-            int index2_1 = index2 / studentCount;
-            if (index2_1 == classes.Count)
+            IStudent student1 = null;
+            IStudent student2 = null;
+            IStudent temp = null;
+
+            int student1ClassIndex = 0;
+            int student2ClassIndex = 0;
+            int i = 0;
+            while((student1 is null || student2 is null) && i < classes.Count)
             {
-                index2_1--;
-            }
-            int index2_2 = index2 - index2_1 * studentCount - 1;
-            if (index2_2 < 0)
-            {
-                index2_2 = 0;
+                var _class = classes[i];
+                int length = _class.Students.Length;
+
+                if(student1 is null)
+                {
+                    if (index1 < length)
+                    {
+                        student1 = _class.Students[index1];
+                        student1ClassIndex = i;
+                    }
+                    else
+                    {
+                        index1 -= length;
+                    }
+                }
+                
+                if(student2 is null)
+                {
+                    if (index2 < length)
+                    {
+                        student2 = _class.Students[index2];
+                        student2ClassIndex = i;
+                    }
+                    else
+                    {
+                        index2 -= length;
+                    }
+                }
+
+                i++;
             }
 
-            IStudent temp = classes[index1_1].Students[index1_2];
-            classes[index1_1].Students[index1_2] = classes[index2_1].Students[index2_2];
-            classes[index2_1].Students[index2_2] = temp;
+            temp = student1;
+            classes[student1ClassIndex].Students[index1] = student2;
+            classes[student2ClassIndex].Students[index2] = temp;
 
-            if (index1_1 == index2_1)
+            if (student1ClassIndex == student2ClassIndex)
             {
-                classes[index1_1].InitWeightValues();
+                classes[student1ClassIndex].InitWeightValues();
             }
             else
             {
-                classes[index1_1].InitWeightValues();
-                classes[index2_1].InitWeightValues();
+                classes[student1ClassIndex].InitWeightValues();
+                classes[student2ClassIndex].InitWeightValues();
             }
+
+            //int index1_1 = index1 / classCount;
+            //if (index1_1 == classes.Count)
+            //{
+            //    index1_1--;
+            //}
+            //int index1_2 = index1 - index1_1 * classCount - 1;
+            //if(index1_2 < 0)
+            //{
+            //    index1_2 = 0;
+            //}
+
+            //int index2_1 = index2 / classCount;
+            //if (index2_1 == classes.Count)
+            //{
+            //    index2_1--;
+            //}
+            //int index2_2 = index2 - index2_1 * classCount - 1;
+            //if (index2_2 < 0)
+            //{
+            //    index2_2 = 0;
+            //}
+
+            //IStudent temp = classes[index1_1].Students[index1_2];
+            //classes[index1_1].Students[index1_2] = classes[index2_1].Students[index2_2];
+            //classes[index2_1].Students[index2_2] = temp;
+
+            //if (index1_1 == index2_1)
+            //{
+            //    classes[index1_1].InitWeightValues();
+            //}
+            //else
+            //{
+            //    classes[index1_1].InitWeightValues();
+            //    classes[index2_1].InitWeightValues();
+            //}
 
             return classes;
         }
