@@ -124,9 +124,9 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
 
         private bool IsPass()
         {
-            foreach(var pair in weightDic)
+            foreach(var weight in WeightConfig.Weights)
             {
-                if(pair.Value > 10)
+                if(weightDic[weight.Name] >= weight.Limit)
                 {
                     return false;
                 }
