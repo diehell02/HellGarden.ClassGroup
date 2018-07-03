@@ -28,7 +28,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
 
         public List<IClass> Grouping(List<IStudent> students, int classCount, int repeatCount, bool IsMultithreading, Action<string> action = null)
         {
-            List<IClass> result = null;
+            //List<IClass> result = null;
 
             int count = 0;
 
@@ -101,12 +101,12 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                     {
                         Task.Run(() =>
                         {
-                            result = CalculateWeight(classes);
+                            CalculateWeight(classes);
                         });
                     }
                     else
                     {
-                        result = CalculateWeight(classes);
+                        CalculateWeight(classes);
                     }
 
                     count--;
@@ -124,12 +124,19 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
 
         private bool IsPass()
         {
-            foreach(var weight in WeightConfig.Weights)
+            if(weightDic.Count == WeightConfig.Weights.Length)
             {
-                if(weightDic[weight.Name] >= weight.Limit)
+                foreach (var weight in WeightConfig.Weights)
                 {
-                    return false;
+                    if (weightDic[weight.Name] >= weight.Limit)
+                    {
+                        return false;
+                    }
                 }
+            }
+            else
+            {
+                return false;
             }
 
             return true;
@@ -187,6 +194,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
             }
 
             temp = student1;
+
             classes[student1ClassIndex].Students[index1] = student2;
             classes[student2ClassIndex].Students[index2] = temp;
 
@@ -260,7 +268,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
             return classes;
         }
 
-        private List<IClass> CalculateWeight(List<IClass> classes)
+        private void CalculateWeight(List<IClass> classes)
         {
             double sumVariance = 0;
             Dictionary<string, double> _weightDic = new Dictionary<string, double>();
@@ -270,11 +278,30 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                 var weight = WeightConfig.Weights[index];
 
                 double[] values = new double[classes.Count];
+                //double max = double.MinValue;
+                //double min = double.MaxValue;
 
                 for (int i = 0; i < classes.Count; i++)
                 {
-                    values[i] = classes[i].WeightValues[weight.ID];
+                    var value = classes[i].WeightValues[weight.ID];
+
+                    //if(value > max)
+                    //{
+                    //    max = value;
+                    //}
+
+                    //if(value < min)
+                    //{
+                    //    min = value;
+                    //}
+
+                    values[i] = value;
                 }
+
+                //if (weight.Type == WeightType.Score && max - min > 1)
+                //{
+                //    return;
+                //}
 
                 double variance = MathUtil.Variance(values);
 
@@ -294,11 +321,20 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
                 {
                     weightDic = _weightDic;
                     minWeight = sumVariance;
-                    result = classes;
+                    result = new List<IClass>();
+
+                    classes.ForEach(_class =>
+                    {
+                        IStudent[] students = new Student[_class.Students.Length];
+
+                        _class.Students.CopyTo(students, 0);
+
+                        result.Add(new Class(_class.ID, students));
+                    });
                 }
             }
 
-            return result;
+            //return result;
         }
     }
 }

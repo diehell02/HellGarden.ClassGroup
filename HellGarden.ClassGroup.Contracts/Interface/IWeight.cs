@@ -46,7 +46,7 @@ namespace HellGarden.ClassGroup.Contracts.Interface
         /// <summary>
         /// 方差限制
         /// </summary>
-        int Limit
+        double Limit
         {
             get;
             set;
@@ -55,7 +55,7 @@ namespace HellGarden.ClassGroup.Contracts.Interface
         /// <summary>
         /// 倍数
         /// </summary>
-        int Multiple
+        double Multiple
         {
             get;
             set;

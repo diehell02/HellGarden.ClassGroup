@@ -49,7 +49,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
         /// <summary>
         /// 方差限制
         /// </summary>
-        public int Limit
+        public double Limit
         {
             get;
             set;
@@ -58,7 +58,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary.Entity
         /// <summary>
         /// 倍数
         /// </summary>
-        public int Multiple
+        public double Multiple
         {
             get;
             set;
