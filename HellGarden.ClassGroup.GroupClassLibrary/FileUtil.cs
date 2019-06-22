@@ -50,7 +50,7 @@ namespace HellGarden.ClassGroup.GroupClassLibrary
 
                 students = new List<IStudent>();
 
-                int index = 1;
+                int index = 0;
 
                 while(index < sheet.LastRowNum)
                 {
